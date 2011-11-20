@@ -1,0 +1,5 @@
+C:\Users\jan\documents\visual studio 2010\Projects\LuxExporter\LuxExporter\bin\Release\LuxExporter.dll
+C:\Users\jan\documents\visual studio 2010\Projects\LuxExporter\LuxExporter\bin\Release\LuxExporter.pdb
+C:\Users\jan\documents\visual studio 2010\Projects\LuxExporter\LuxExporter\obj\Release\ResolveAssemblyReference.cache
+C:\Users\jan\documents\visual studio 2010\Projects\LuxExporter\LuxExporter\obj\Release\LuxExporter.dll
+C:\Users\jan\documents\visual studio 2010\Projects\LuxExporter\LuxExporter\obj\Release\LuxExporter.pdb

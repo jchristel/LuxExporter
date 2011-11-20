@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-16" standalone="no"?>
+<RevitAddIns>
+  <AddIn Type="Command">
+  <Text>LuxExporter</Text>
+    <Assembly>C:\Users\jan\Documents\Visual Studio 2010\Projects\LuxExporter\LuxExporter\bin\Debug\LuxExporter.dll</Assembly>
+    <AddInId>604B1052-F742-4951-8576-C261D1993107</AddInId>
+    <FullClassName>LuxExporter.LuxExporter_Entry</FullClassName>
+	<VendorId>JRC_</VendorId>
+    <VendorDescription>Jan Christel</VendorDescription>
+  </AddIn>
+</RevitAddIns>
