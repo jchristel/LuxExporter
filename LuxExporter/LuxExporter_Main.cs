@@ -614,7 +614,7 @@ namespace LuxExporter
                                 // instanciate worker class and pass geo element to it
                                 Revit_Geometry_Worker Exporter = new Revit_Geometry_Worker(item, sPLYFilePath, vDoc);
                                 //get geo data without transformation
-                                StringBuilder ExportString = Exporter.ExportToPLY_Solid(GeometryOption, false);
+                                StringBuilder ExportString = Exporter.ExportToPLY_Solid(GeometryOption,false);
 
                                 //need to check whether instance has location point if yes add to list other wise no instancing enabled!!
                                 Boolean CheckForInsertionPoint = objInstance.HasInsertionPoint();
@@ -641,8 +641,6 @@ namespace LuxExporter
 
                                 if (ExportString != null)
                                 {
-                                    //dummy = CreateLuxAttribute(ExportString, RevitLink, ObjectName);
-                                    //dummy.AppendLine("");
                                     ListExport.Add(dummy);
                                     //add ply data to list...
                                     ListExport.Add(ExportString);
@@ -670,11 +668,10 @@ namespace LuxExporter
                             // instanciate worker class and pass geo element to it
                             Revit_Geometry_Worker Exporter = new Revit_Geometry_Worker(item, sPLYFilePath, vDoc);
                             //get geo data
-                            StringBuilder ExportString = Exporter.ExportToPLY_Solid(GeometryOption, false);
+                            StringBuilder ExportString = Exporter.ExportToPLY_Solid(GeometryOption,false);
                             //set up lux string
                             if (ExportString != null)
                             {
-                                //ListExport = CreateLuxAttribute(ExportString, RevitLink, item.UniqueId.ToString());
                                 StringBuilder dummy = new StringBuilder("");
                                 //get export string
                                 dummy=CreateLuxAttribute(ExportString, RevitLink, item.UniqueId.ToString());
@@ -835,7 +832,6 @@ namespace LuxExporter
                 dummy.AppendLine("TransformBegin");
                 //calculate Transformation matrix
                 LuxExporter.Revit_Transform TransFormMatrix = new Revit_Transform();
-                //String sTransFormMatrix = TransFormMatrix.TransformationInHost(objInstance.Origin, objInstance.BaseX, objInstance.BaseY, objInstance.BaseZ);
                 String sTransFormMatrix = TransFormMatrix.TransformationInHost(objInstance.FamilyTransform);
                 //finalise output string
                 dummy.AppendLine("#Revit T CreateLuxObjectInstanceFromFamily");
@@ -851,26 +847,12 @@ namespace LuxExporter
                 {
                     dummy.AppendLine("AttributeBegin");
                     dummy.AppendLine("TransformBegin");
-
                     //calculate Transformation matrix
                     LuxExporter.Revit_Transform TransFormMatrix = new Revit_Transform();
-                    String sTransFormMatrix = "";
-                    
-                    //if (item.IsTranslation)
-                    //{
-                    //    dummy.AppendLine("#Translation only");
-                    //    sTransFormMatrix = TransFormMatrix.CalculateLuxTransformationMatrixInLinkTranslationOnly(objInstance, item);
-                    //    dummy.AppendLine("Transform [" + sTransFormMatrix + "]");
-
-                    //}
-                    //else
-                    //{
-                        sTransFormMatrix = TransFormMatrix.TransformationInLink(objInstance, item);
-                        dummy.AppendLine("#Revit T ...");
-                        dummy.AppendLine("Transform [" + sTransFormMatrix + "]");
-                    //}
-                    
+                    String sTransFormMatrix = TransFormMatrix.TransformationInLink(objInstance, item);
                     //finalise output string
+                    dummy.AppendLine("#Revit T ...");
+                    dummy.AppendLine("Transform [" + sTransFormMatrix + "]");
                     dummy.AppendLine("ObjectInstance \"" + objInstance.HostName+"_"+ objInstance.GetUniqueFamilyInstanceName.ToString() + "\"");
                     dummy.AppendLine("TransformEnd");
                     dummy.AppendLine("AttributeEnd");
@@ -910,13 +892,10 @@ namespace LuxExporter
 
             foreach (Transform item in RevitLink.Transformations)
             {
-                //LuxExporter.UnitConverter Converter = new UnitConverter();
-                //XYZ transformedOrigin = Converter.ConvertPointCoordToMeter(item.Origin);
                 dummy.AppendLine("AttributeBegin");
                 dummy.AppendLine("TransformBegin");
                 //calculate Transformation matrix
                 LuxExporter.Revit_Transform TransFormMatrix = new Revit_Transform();
-                //String sTransFormMatrix = TransFormMatrix.TransformationInHost(transformedOrigin, item.Inverse.BasisX, item.Inverse.BasisY, item.Inverse.BasisZ);
                 String sTransFormMatrix = TransFormMatrix.TransformationInHost(item);
                 //finalise output string
                 dummy.AppendLine("#Revit T CreateLuxInstanceFromNonFamily");

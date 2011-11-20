@@ -230,16 +230,18 @@ namespace LuxExporter
                         {
                             continue;
                         }
+                        
                         //get transformation if required
                         Transform instTransform;
-                        if (T)
-                        {
-                            instTransform = instance.Transform;    
-                        }
-                        else
-                        {
+                        //if (T)
+                        //{
+                        //    instTransform = instance.Transform;    
+                        //}
+                        //else
+                        //{
                             instTransform = null;
-                        }
+                        //}
+                        
                         //get the solid exported
                         strExport.Append(ExportSolid(solid, instTransform, vObjectCounter.ToString()).ToString());
                         //increase object counters

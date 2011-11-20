@@ -120,14 +120,14 @@ namespace LuxExporter.PLY
                         //transformedPoint = point;
 
 
-                        if (instTransform == null)
-                        {
+                        //if (instTransform == null)
+                        //{
                             transformedPoint = point;
-                        }
-                        else
-                        {
-                            transformedPoint = instTransform.OfPoint(point);
-                        }
+                        //}
+                        //else
+                        //{
+                        //    transformedPoint = instTransform.OfPoint(point);
+                        //}
 
                         //get the normal
                         XYZ NormalAtPoint;
@@ -177,14 +177,14 @@ namespace LuxExporter.PLY
 
                             XYZ transformedPoint;
 
-                            if (instTransform == null)
-                            {
+                            //if (instTransform == null)
+                            //{
                                 transformedPoint = point;
-                            }
-                            else
-                            {
-                                transformedPoint = instTransform.OfPoint(point);
-                            }
+                            //}
+                            //else
+                            //{
+                            //    transformedPoint = instTransform.OfPoint(point);
+                            //}
 
                             XYZ NormalAtPoint;
 
