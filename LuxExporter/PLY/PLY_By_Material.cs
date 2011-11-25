@@ -81,10 +81,6 @@ namespace LuxExporter.PLY
                     point = Converter.ConvertPointCoordToMeter(point);
                     //add to ply class
                     Data.AddVertice(point, NormalAtPoint);
-                    
-                    //add to ply class
-                    //Data.AddVertice(point);
-
                } 
             }
         }
@@ -98,9 +94,6 @@ namespace LuxExporter.PLY
 
                 //process face
                 Mesh vMesh = vFace.Triangulate();
-
-                
-
 
                 //check if we have a quad mesh (4 edges to a face)
                 if (vMesh.Vertices.Count == 4)
@@ -116,18 +109,15 @@ namespace LuxExporter.PLY
                         XYZ point = ii;
                         XYZ transformedPoint;
 
-
-                        //transformedPoint = point;
-
-
-                        //if (instTransform == null)
-                        //{
+                        //transform geometry (only required in nested families / or elements like baluster
+                        if (instTransform == null)
+                        {
                             transformedPoint = point;
-                        //}
-                        //else
-                        //{
-                        //    transformedPoint = instTransform.OfPoint(point);
-                        //}
+                        }
+                        else
+                        {
+                            transformedPoint = instTransform.OfPoint(point);
+                        }
 
                         //get the normal
                         XYZ NormalAtPoint;
@@ -152,8 +142,7 @@ namespace LuxExporter.PLY
                         
                         //add to ply class
                         Data.AddVertice(transformedPoint,NormalAtPoint);
-                        //add to ply class
-                        //Data.AddVertice(transformedPoint);
+                        
                     }
 
                 }
@@ -174,17 +163,16 @@ namespace LuxExporter.PLY
                         for (int iPointsCounter = 0; iPointsCounter < 3; iPointsCounter++)
                         {
                             XYZ point = objTriangular.get_Vertex(iPointsCounter);
-
                             XYZ transformedPoint;
-
-                            //if (instTransform == null)
-                            //{
+                            //transform geometry (only required in nested families / or elements like baluster
+                            if (instTransform == null)
+                            {
                                 transformedPoint = point;
-                            //}
-                            //else
-                            //{
-                            //    transformedPoint = instTransform.OfPoint(point);
-                            //}
+                            }
+                            else
+                            {
+                                transformedPoint = instTransform.OfPoint(point);
+                            }
 
                             XYZ NormalAtPoint;
 
@@ -206,10 +194,6 @@ namespace LuxExporter.PLY
                             //NormalAtPoint = Converter.ConvertPointCoordToMeter(NormalAtPoint);
                             //add to ply class
                             Data.AddVertice(transformedPoint,NormalAtPoint);
-                            //add to ply class
-                            //Data.AddVertice(transformedPoint);
-
-
                         }
 
                     }
@@ -245,7 +229,7 @@ namespace LuxExporter.PLY
         #region class constructors
 
 
-        //class constructor (takes Revit Element as argument)
+        //class constructor 
         public PLY_By_Material()
         {
             Data = new PLY_Data();

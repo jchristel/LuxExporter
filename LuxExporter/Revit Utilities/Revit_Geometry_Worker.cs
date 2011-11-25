@@ -159,8 +159,9 @@ namespace LuxExporter
                         {
                             // Get the geometry instance which contains the geometry information
                             Autodesk.Revit.DB.GeometryInstance instance = item as Autodesk.Revit.DB.GeometryInstance;
+                            
                             //start digging down into nested items...
-                            InstanceIterator(item as GeometryInstance,Transform, vObjectCounter, strExport).ToString();
+                            InstanceIterator(item as GeometryInstance,null, vObjectCounter, strExport).ToString();
                         }
                         else
 	                    {
@@ -175,7 +176,7 @@ namespace LuxExporter
                                 }
                                 //get export string
                                 strExport.AppendLine(ExportSolid(solid, null, vObjectCounter.ToString()).ToString());
-                                //increase object counters ???
+                                //increase object counters
                                 vObjectCounter++;
                             }
 	                    }
@@ -203,8 +204,8 @@ namespace LuxExporter
             }
         }
 
-       
-        private StringBuilder InstanceIterator(Autodesk.Revit.DB.GeometryInstance instance,Boolean T, Int32 ObjectCounter,StringBuilder strExport)
+
+        private StringBuilder InstanceIterator(Autodesk.Revit.DB.GeometryInstance instance, Transform HostTransform, Int32 ObjectCounter, StringBuilder strExport)
         {
             try
             {
@@ -231,16 +232,16 @@ namespace LuxExporter
                             continue;
                         }
                         
-                        //get transformation if required
+                        ////get transformation if required
                         Transform instTransform;
-                        //if (T)
-                        //{
-                        //    instTransform = instance.Transform;    
-                        //}
-                        //else
-                        //{
+                        if (HostTransform!=null)
+                        {
+                            instTransform = instance.Transform;
+                        }
+                        else
+                        {
                             instTransform = null;
-                        //}
+                        }
                         
                         //get the solid exported
                         strExport.Append(ExportSolid(solid, instTransform, vObjectCounter.ToString()).ToString());
@@ -251,8 +252,11 @@ namespace LuxExporter
                     {
                         if (objgetest.GetType() == typeof(GeometryInstance))
                         {
+                            //get the transformation: do I need to add mulltiple transformation the deeper I dig??
+                            Transform instTransform = instance.Transform;
+
                             //do i need to do anything with transformation here???
-                            InstanceIterator(objgetest as GeometryInstance, T, ObjectCounter, strExport);
+                            InstanceIterator(objgetest as GeometryInstance, instTransform, ObjectCounter, strExport);
                         }
                     }
                 }
@@ -295,92 +299,17 @@ namespace LuxExporter
                     //check whether face has split regions on it
                     if (FaceList.Count>1)
                     {
-                        //loop thrpugh all faces
+                        //loop through all faces
                         foreach (Face item in FaceList)
                         {
+                            //export to ply
                             GetPly(item, MaterialIDsList, PLYList, instTransform);
-                            ////get the material ID
-                            //String sMaterialID = item.MaterialElementId.ToString();
-                            ////check whether we have this material already
-                            //if (MaterialIDsList.Contains(sMaterialID))
-                            //{
-                            //    //get index of PLY
-                            //    LuxExporter.PLY.PLY_By_Material PLYWorker = PLYList[MaterialIDsList.IndexOf(sMaterialID)];
-                            //    //process face
-                            //    PLYWorker.TriangulateFace(item, instTransform);
-                            //}
-                            //else
-                            //{
-                            //    MaterialIDsList.Add(sMaterialID);
-                            //    LuxExporter.PLY.PLY_By_Material PLYWorker = new PLY.PLY_By_Material();
-                            //    //process face
-                            //    PLYWorker.TriangulateFace(item, instTransform);
-                            //    PLYWorker.MaterialID = item.MaterialElementId;
-                            //    Material FaceMaterial;
-                            //    FaceMaterial= vDoc.get_Element(PLYWorker.MaterialID)as Material;
-
-                            //    if (FaceMaterial == null)
-                            //    {
-                            //        PLYWorker.MaterialName = "Default";
-                            //    }
-                            //    else
-                            //    {
-                            //        PLYWorker.MaterialName = FaceMaterial.Name.ToString();
-                            //        //in future: check whether this is a Glass2 Material via stored data
-                            //        //for now just check transparency
-                            //        if (FaceMaterial.Transparency > 0)
-                            //        {
-                            //            PLYWorker.Is_Glass2 = true;
-                            //        }
-                            //    }
-                            //    //add to list
-                            //    PLYList.Add(PLYWorker);
-                            //}
                         }
                     }
                     else
                     {
+                        //export to ply
                         GetPly(face, MaterialIDsList, PLYList, instTransform);
-                        ////get the material ID
-                        //String sMaterialID = face.MaterialElementId.ToString();
-
-                        ////check whether we have this material already
-                        //if (MaterialIDsList.Contains(sMaterialID))
-                        //{
-                        //    //get index of PLY
-                        //    LuxExporter.PLY.PLY_By_Material PLYWorker = PLYList[MaterialIDsList.IndexOf(sMaterialID)];
-                        //    //process face
-                        //    PLYWorker.TriangulateFace(face, instTransform);
-                        //}
-                        //else
-                        //{
-                        //    MaterialIDsList.Add(sMaterialID);
-                        //    LuxExporter.PLY.PLY_By_Material PLYWorker = new PLY.PLY_By_Material();
-                        //    //process face
-                        //    PLYWorker.TriangulateFace(face, instTransform);
-                        //    PLYWorker.MaterialID = face.MaterialElementId;
-                        //    Material FaceMaterial;
-                        //    FaceMaterial = vDoc.get_Element(PLYWorker.MaterialID) as Material;
-
-                        //    if (FaceMaterial == null)
-                        //    {
-                        //        PLYWorker.MaterialName = "Default";
-                        //    }
-                        //    else
-                        //    {
-                        //        PLYWorker.MaterialName = FaceMaterial.Name.ToString();
-                        //        //in future: check whether this is a Glass2 Material via stored data
-                        //        //for now just check transparency
-                        //        if (FaceMaterial.Transparency > 0)
-                        //        {
-                        //            PLYWorker.Is_Glass2 = true;
-                        //        }
-                        //    }
-
-                        //    //add to list
-                        //    PLYList.Add(PLYWorker);
-
-                       // }
                     }
                  }
                 catch (Exception ex)
